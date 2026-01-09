@@ -1,18 +1,112 @@
+// --- 1. Base de Dados de Inteligência (Mock) ---
+const regionData = {
+    'br-co': {
+        temp: 32,
+        desc: "Ensolarado",
+        humid: "40%",
+        soil: { type: "Latossolo Vermelho", clay: "45-60%", mo: "65%" },
+        crops: ["Crotalária Spectabilis", "Braquiária Ruziziensis", "Milheto"],
+        market: "Alta demanda por descompactação de solo pós-soja."
+    },
+    'br-sul': {
+        temp: 18,
+        desc: "Nublado",
+        humid: "75%",
+        soil: { type: "Argissolo", clay: "30-45%", mo: "80%" },
+        crops: ["Aveia Preta", "Azevém", "Nabo Forrageiro"],
+        market: "Foco em cobertura de inverno e proteção contra geada."
+    },
+    'br-matopiba': {
+        temp: 35,
+        desc: "Seco",
+        humid: "30%",
+        soil: { type: "Neossolo Quartzarênico", clay: "10-20%", mo: "40%" },
+        crops: ["Estilosantes", "Milheto ADR 300", "Sorgo"],
+        market: "Necessidade crítica de retenção de água e biomassa."
+    },
+    'br-se': {
+        temp: 24,
+        desc: "Parcialmente Nublado",
+        humid: "60%",
+        soil: { type: "Latossolo Amarelo", clay: "35-50%", mo: "60%" },
+        crops: ["Trigo Mourisco", "Crotalária Ochroleuca", "Mix Café"],
+        market: "Otimização de nitrogênio para culturas perenes (Café/Laranja)."
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    initChemicalParticles();
-    animateCalculations();
+    initParticles();
+    initSmartSelector();
+    
+    // Carrega dados iniciais
+    updateDashboard('br-co');
 });
 
-// --- 1. Sistema de Partículas: Química do Solo ---
-function initChemicalParticles() {
-    const canvas = document.getElementById('science-canvas');
-    const ctx = canvas.getContext('2d');
+// --- 2. Lógica do Smart Selector ---
+function initSmartSelector() {
+    const selector = document.getElementById('region-select');
     
+    selector.addEventListener('change', (e) => {
+        // Animação de saída (Fade Out) dos dados
+        animateElementsOut();
+        
+        // Simula tempo de processamento "AI"
+        setTimeout(() => {
+            updateDashboard(e.target.value);
+            animateElementsIn();
+        }, 400);
+    });
+}
+
+function updateDashboard(regionKey) {
+    const data = regionData[regionKey];
+    
+    // Clima
+    document.getElementById('temp-val').innerText = data.temp;
+    document.getElementById('weather-desc').innerText = data.desc;
+    document.getElementById('humid-val').innerText = data.humid;
+    
+    // Solo
+    document.getElementById('soil-type').innerText = data.soil.type;
+    document.getElementById('soil-clay').innerText = data.soil.clay;
+    document.getElementById('mo-fill').style.width = data.soil.mo;
+    
+    // Culturas (Cria lista dinamicamente)
+    const list = document.getElementById('crops-list');
+    list.innerHTML = '';
+    data.crops.forEach(crop => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="dot"></span> ${crop}`;
+        list.appendChild(li);
+    });
+    
+    // Market Insight
+    document.getElementById('market-tip').innerText = data.market;
+}
+
+// Utilitários de Animação
+function animateElementsOut() {
+    const widgets = document.querySelectorAll('.weather-widget, .soil-widget, .crops-widget');
+    widgets.forEach(w => {
+        w.style.opacity = '0.5';
+        w.style.transform = 'scale(0.98)';
+    });
+}
+
+function animateElementsIn() {
+    const widgets = document.querySelectorAll('.weather-widget, .soil-widget, .crops-widget');
+    widgets.forEach(w => {
+        w.style.opacity = '1';
+        w.style.transform = 'scale(1)';
+    });
+}
+
+// --- 3. Partículas Orgânicas (Pólen/Luz) ---
+function initParticles() {
+    const canvas = document.getElementById('organic-canvas');
+    const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
-    
-    // Elementos que fazem sentido no agro
-    const symbols = ['N', 'P', 'K', 'Ca', 'Mg', 'S', 'C', 'H₂O'];
 
     function resize() {
         width = canvas.width = window.innerWidth;
@@ -21,66 +115,37 @@ function initChemicalParticles() {
     window.addEventListener('resize', resize);
     resize();
 
-    class ChemicalParticle {
+    class Pollen {
         constructor() {
             this.x = Math.random() * width;
-            this.y = height + Math.random() * 50; // Começa de baixo
-            this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
-            this.velocity = Math.random() * 0.5 + 0.2;
-            this.size = Math.random() * 10 + 10; // Tamanho da fonte
-            this.opacity = 0;
-            this.fadeState = 'in'; // in or out
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5; // Movimento muito lento
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 3 + 1;
+            this.alpha = Math.random() * 0.5;
         }
 
         update() {
-            this.y -= this.velocity;
+            this.x += this.vx;
+            this.y += this.vy;
             
-            // Fade in/out suave
-            if (this.fadeState === 'in') {
-                this.opacity += 0.01;
-                if (this.opacity >= 0.6) this.fadeState = 'out';
-            } else {
-                this.opacity -= 0.005;
-            }
-
-            // Reset
-            if (this.y < -50 || this.opacity <= 0) {
-                this.y = height + 50;
-                this.x = Math.random() * width;
-                this.opacity = 0;
-                this.fadeState = 'in';
-                this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
-            }
+            // Loop infinito sem cortes bruscos
+            if (this.x < -10) this.x = width + 10;
+            if (this.x > width + 10) this.x = -10;
+            if (this.y < -10) this.y = height + 10;
+            if (this.y > height + 10) this.y = -10;
         }
 
         draw() {
-            ctx.font = `${this.size}px 'Outfit'`;
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.3})`;
-            ctx.fillText(this.symbol, this.x, this.y);
-            
-            // Desenha um pequeno hexágono em volta de alguns
-            if (this.symbol === 'C' || this.symbol === 'N') {
-                ctx.strokeStyle = `rgba(76, 175, 80, ${this.opacity * 0.2})`;
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                const r = this.size; 
-                for (let i = 0; i < 6; i++) {
-                    const angle = (Math.PI / 3) * i;
-                    const hx = this.x + 8 + r * Math.cos(angle);
-                    const hy = this.y - 8 + r * Math.sin(angle);
-                    if (i === 0) ctx.moveTo(hx, hy);
-                    else ctx.lineTo(hx, hy);
-                }
-                ctx.closePath();
-                ctx.stroke();
-            }
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            // Cor: Dourado/Verde muito sutil
+            ctx.fillStyle = `rgba(141, 123, 104, ${this.alpha * 0.3})`;
+            ctx.fill();
         }
     }
 
-    // Criar partículas
-    for(let i = 0; i < 40; i++) {
-        particles.push(new ChemicalParticle());
-    }
+    for (let i = 0; i < 50; i++) particles.push(new Pollen());
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
@@ -91,49 +156,4 @@ function initChemicalParticles() {
         requestAnimationFrame(animate);
     }
     animate();
-}
-
-// --- 2. Animação de Números Inteligentes (Data Crunching) ---
-function animateCalculations() {
-    const nEl = document.getElementById('val-n');
-    const compEl = document.getElementById('val-comp');
-    const costEl = document.getElementById('val-cost');
-    const progEl = document.getElementById('prog-num');
-
-    // Função genérica para animar números
-    function countUp(element, end, suffix, prefix = '', duration = 2000, isFloat = false) {
-        let start = 0;
-        const stepTime = Math.abs(Math.floor(duration / (end - start) * (isFloat ? 10 : 1)));
-        
-        let timer = setInterval(() => {
-            start += isFloat ? 0.1 : 1;
-            let current = isFloat ? start.toFixed(1) : Math.floor(start);
-            
-            element.innerText = `${prefix}${current}${suffix}`;
-            
-            if (start >= end) {
-                clearInterval(timer);
-                element.innerText = `${prefix}${end}${suffix}`; // Garante o valor final exato
-            }
-        }, isFloat ? 50 : 20);
-    }
-
-    // Dispara animações
-    setTimeout(() => {
-        countUp(nEl, 120, ' kg/ha');
-        countUp(compEl, 2.5, ' MPa', '', 2000, true);
-        
-        // Simulação de custo aleatório complexo
-        let cost = 0;
-        const costTimer = setInterval(() => {
-            cost += Math.random() * 50;
-            costEl.innerText = `R$ ${cost.toFixed(2)}`;
-            if (cost > 1250) {
-                clearInterval(costTimer);
-                costEl.innerText = `R$ 1.250,00`;
-            }
-        }, 30);
-
-        countUp(progEl, 75, '%');
-    }, 500); // Pequeno delay inicial
 }

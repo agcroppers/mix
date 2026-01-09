@@ -3,81 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AG Mix | Intelligence</title>
+    <title>AG Mix | Smart Intelligence</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-    <div class="agro-bg"></div>
-    
-    <div class="dark-overlay"></div>
+    <canvas id="organic-canvas"></canvas>
 
-    <canvas id="science-canvas"></canvas>
+    <div class="ambient-bg"></div>
 
-    <div class="scanner-line"></div>
-
-    <main class="app-container">
+    <main class="dashboard-container">
         
-        <div class="glass-panel" id="main-panel">
-            <header class="panel-header">
-                <img src="https://raw.githubusercontent.com/agcroppers/links/refs/heads/main/assets/Logo-Branco-Liso-AGC.png" alt="AG Croppers" class="logo">
-                <div class="live-status">
-                    <span class="pulsing-dot"></span>
-                    <span class="status-text">ANALISANDO REGIÃO: BR-CENTRO-OESTE</span>
-                </div>
-            </header>
-
-            <div class="hero-content">
-                <h1 class="title-display">
-                    SIMULADOR <br>
-                    <span class="highlight-green">AG MIX</span>
-                    <span class="version-tag">AI CORE 2.0</span>
-                </h1>
-                
-                <p class="description">
-                    Decodificando a biologia do seu solo através de inteligência de dados. 
-                    Otimize carbono, nitrogênio e rentabilidade em tempo real.
-                </p>
-
-                <div class="calculation-grid">
-                    <div class="calc-item">
-                        <span class="calc-label">Fixação Biológica</span>
-                        <div class="calc-value" id="val-n">0%</div>
-                    </div>
-                    <div class="calc-item">
-                        <span class="calc-label">Descompactação</span>
-                        <div class="calc-value" id="val-comp">0 MPa</div>
-                    </div>
-                    <div class="calc-item">
-                        <span class="calc-label">Previsão Custo/Ha</span>
-                        <div class="calc-value highlight-val" id="val-cost">R$ 0,00</div>
-                    </div>
-                </div>
-
-                <div class="progress-section">
-                    <div class="bar-header">
-                        <span>Compilando Algoritmo Genético...</span>
-                        <span id="prog-num">0%</span>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill"></div>
-                    </div>
-                </div>
-
-                <button class="btn-modern">
-                    <span class="btn-text">Entrar na Lista de Espera</span>
-                    <div class="btn-shine"></div>
-                </button>
+        <header class="app-header">
+            <div class="brand-wrapper">
+                <img src="https://raw.githubusercontent.com/agcroppers/links/refs/heads/main/assets/Logo%20Verde%20Liso%20AGC.png" alt="AG Croppers" class="logo">
+                <div class="divider"></div>
+                <span class="product-name">AG MIX <span class="badge">SMART BETA</span></span>
             </div>
-        </div>
+            <p class="tagline">Inteligência de mercado em conjunto com Pesquisa e Desenvolvimento</p>
+        </header>
+
+        <section class="smart-grid">
+
+            <article class="glass-card main-control">
+                <div class="card-content">
+                    <h1 class="hero-title">Simulação de <br><em>Ecossistema</em>.</h1>
+                    <p class="hero-desc">Selecione sua macro-região para ativar a inteligência de dados local.</p>
+                    
+                    <div class="region-selector-wrapper">
+                        <label>Região de Análise</label>
+                        <select id="region-select" class="premium-select">
+                            <option value="br-co">Centro-Oeste (Cerrado)</option>
+                            <option value="br-sul">Sul (Subtropical)</option>
+                            <option value="br-matopiba">Matopiba (Fronteira)</option>
+                            <option value="br-se">Sudeste (Alta Altitude)</option>
+                        </select>
+                    </div>
+
+                    <button class="action-btn">
+                        <span>Iniciar Simulação Completa</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </article>
+
+            <article class="glass-card weather-widget">
+                <div class="card-header">
+                    <i data-lucide="cloud-sun" class="icon-subtle"></i>
+                    <h3>Clima em Tempo Real</h3>
+                </div>
+                <div class="weather-display" id="weather-container">
+                    <div class="temp-big"><span id="temp-val">28</span>°</div>
+                    <div class="weather-details">
+                        <p id="weather-desc">Ensolarado</p>
+                        <small>Umidade: <span id="humid-val">45%</span></small>
+                    </div>
+                </div>
+                <div class="mini-chart">
+                    <div class="bar" style="height: 40%"></div>
+                    <div class="bar" style="height: 60%"></div>
+                    <div class="bar active" style="height: 80%"></div>
+                    <div class="bar" style="height: 50%"></div>
+                    <div class="bar" style="height: 70%"></div>
+                </div>
+            </article>
+
+            <article class="glass-card soil-widget">
+                <div class="card-header">
+                    <i data-lucide="sprout" class="icon-subtle"></i>
+                    <h3>Perfil de Solo</h3>
+                </div>
+                <div class="soil-info" id="soil-container">
+                    <div class="info-row">
+                        <span>Tipo:</span>
+                        <strong id="soil-type">Latossolo Vermelho</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Argila:</span>
+                        <strong id="soil-clay">45-60%</strong>
+                    </div>
+                    <div class="meter-container">
+                        <span>M.O. Potencial</span>
+                        <div class="meter-bg"><div class="meter-fill" id="mo-fill" style="width: 65%"></div></div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="glass-card crops-widget">
+                <div class="card-header">
+                    <i data-lucide="layers" class="icon-subtle"></i>
+                    <h3>Mix Sugerido</h3>
+                </div>
+                <ul class="crops-list" id="crops-list">
+                    <li><span class="dot"></span> Carregando inteligência...</li>
+                </ul>
+                <div class="market-insight">
+                    <i data-lucide="trending-up"></i>
+                    <span id="market-tip">Alta demanda por cobertura de biomassa nesta região.</span>
+                </div>
+            </article>
+
+        </section>
 
     </main>
 
     <script src="app.js"></script>
+    <script>
+        lucide.createIcons(); // Inicializa ícones
+    </script>
 </body>
 </html>
