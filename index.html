@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AG Mix | Intelligence</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="agro-bg"></div>
+    
+    <div class="dark-overlay"></div>
+
+    <canvas id="science-canvas"></canvas>
+
+    <div class="scanner-line"></div>
+
+    <main class="app-container">
+        
+        <div class="glass-panel" id="main-panel">
+            <header class="panel-header">
+                <img src="https://raw.githubusercontent.com/agcroppers/links/refs/heads/main/assets/Logo-Branco-Liso-AGC.png" alt="AG Croppers" class="logo">
+                <div class="live-status">
+                    <span class="pulsing-dot"></span>
+                    <span class="status-text">ANALISANDO REGIÃO: BR-CENTRO-OESTE</span>
+                </div>
+            </header>
+
+            <div class="hero-content">
+                <h1 class="title-display">
+                    SIMULADOR <br>
+                    <span class="highlight-green">AG MIX</span>
+                    <span class="version-tag">AI CORE 2.0</span>
+                </h1>
+                
+                <p class="description">
+                    Decodificando a biologia do seu solo através de inteligência de dados. 
+                    Otimize carbono, nitrogênio e rentabilidade em tempo real.
+                </p>
+
+                <div class="calculation-grid">
+                    <div class="calc-item">
+                        <span class="calc-label">Fixação Biológica</span>
+                        <div class="calc-value" id="val-n">0%</div>
+                    </div>
+                    <div class="calc-item">
+                        <span class="calc-label">Descompactação</span>
+                        <div class="calc-value" id="val-comp">0 MPa</div>
+                    </div>
+                    <div class="calc-item">
+                        <span class="calc-label">Previsão Custo/Ha</span>
+                        <div class="calc-value highlight-val" id="val-cost">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="bar-header">
+                        <span>Compilando Algoritmo Genético...</span>
+                        <span id="prog-num">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <button class="btn-modern">
+                    <span class="btn-text">Entrar na Lista de Espera</span>
+                    <div class="btn-shine"></div>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

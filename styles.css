@@ -1,0 +1,283 @@
+:root {
+    --primary-green: #4CAF50; /* Verde AGC mais vivo */
+    --deep-green: #1b5e20;
+    --glass-surface: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --text-main: #ffffff;
+    --text-secondary: #e0e0e0;
+    --font-main: 'Outfit', sans-serif;
+    --font-tech: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: #050505;
+    font-family: var(--font-main);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- 1. Camadas de Fundo --- */
+.agro-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    /* Imagem de soja/campo de alta qualidade */
+    background-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px) brightness(0.6); /* Blur cinematográfico */
+    transform: scale(1.1); /* Evita bordas brancas do blur */
+    z-index: 0;
+}
+
+.dark-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+    z-index: 1;
+}
+
+#science-canvas {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2;
+    opacity: 0.6;
+}
+
+/* Linha de Scanner (Efeito Satélite) */
+.scanner-line {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+    box-shadow: 0 0 15px var(--primary-green);
+    z-index: 3;
+    opacity: 0.5;
+    animation: scan 8s linear infinite;
+}
+
+@keyframes scan {
+    0% { top: -10%; opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { top: 110%; opacity: 0; }
+}
+
+/* --- 2. Container Central --- */
+.app-container {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* --- 3. Painel de Vidro (O Coração) --- */
+.glass-panel {
+    width: 100%;
+    max-width: 900px;
+    background: var(--glass-surface);
+    backdrop-filter: blur(24px); /* O efeito "Frost" premium */
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 60px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    transform: translateY(20px);
+    animation: fadeUp 1s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Header do Painel */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.logo {
+    width: 160px;
+    height: auto;
+}
+
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.pulsing-dot {
+    width: 8px; height: 8px;
+    background-color: var(--primary-green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-green);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+.status-text {
+    font-family: var(--font-tech);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+/* Conteúdo Principal */
+.title-display {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.highlight-green {
+    color: transparent;
+    background: linear-gradient(90deg, #fff, var(--primary-green));
+    -webkit-background-clip: text;
+}
+
+.version-tag {
+    font-size: 0.9rem;
+    vertical-align: super;
+    background: rgba(76, 175, 80, 0.2);
+    color: var(--primary-green);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-tech);
+    margin-left: 10px;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+/* Grid de Cálculos (Efeito Smart) */
+.calculation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.calc-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.calc-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.calc-label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.calc-value {
+    font-family: var(--font-tech);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.highlight-val { color: var(--primary-green); }
+
+/* Barra de Progresso */
+.progress-section { margin-bottom: 30px; }
+
+.bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 10px;
+    font-family: var(--font-tech);
+}
+
+.progress-track {
+    width: 100%; height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 75%; height: 100%;
+    background: var(--primary-green);
+    box-shadow: 0 0 15px var(--primary-green);
+}
+
+/* Botão Moderno */
+.btn-modern {
+    position: relative;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 18px 36px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    width: fit-content;
+    transition: all 0.3s;
+}
+
+.btn-modern:hover {
+    background: #43a047;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.4);
+    transform: scale(1.02);
+}
+
+.btn-shine {
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 100%; }
+    100% { left: 100%; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .glass-panel { padding: 30px; }
+    .title-display { font-size: 2.2rem; }
+    .calculation-grid { grid-template-columns: 1fr; }
+    .panel-header { flex-direction: column; align-items: center; gap: 20px; }
+}
